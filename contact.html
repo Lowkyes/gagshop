@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Contact - Grow A Garden</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      color: #fff;
+      background: url('https://static1.thegamerimages.com/wordpress/wp-content/uploads/wm/2025/04/garden-in-grow-a-garden.jpg') no-repeat center center fixed;
+      background-size: cover;
+    }
+
+    /* Blurred background overlay */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: inherit;
+      filter: blur(10px) brightness(0.6);
+      z-index: -1;
+    }
+
+    header {
+      text-align: center;
+      padding: 20px;
+      font-size: 2.5rem;
+      color: #fff;
+      text-shadow: 2px 2px #3b8b45;
+      animation: slideIn 1s ease-out;
+    }
+
+    .nav {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+
+    .nav button {
+      margin: 0 10px;
+      padding: 12px 25px;
+      border: none;
+      border-radius: 10px;
+      background: #6cf46c;
+      color: #043f02;
+      font-weight: bold;
+      box-shadow: 0 0 10px #6cf46c;
+      cursor: pointer;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .nav button:hover {
+      transform: scale(1.1);
+      box-shadow: 0 0 15px #8fff8f;
+    }
+
+    .contact-card {
+      max-width: 400px;
+      margin: 50px auto;
+      background: rgba(0, 0, 0, 0.6);
+      border: 3px solid #6cf46c;
+      border-radius: 20px;
+      padding: 30px 20px;
+      text-align: center;
+      box-shadow: 0 0 20px #6cf46c;
+      animation: popIn 1s ease;
+    }
+
+    .contact-card img {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      border: 4px solid #6cf46c;
+      box-shadow: 0 0 10px #6cf46c;
+      margin-bottom: 20px;
+    }
+
+    .contact-card h2 {
+      font-size: 1.8rem;
+      margin-bottom: 10px;
+    }
+
+    .contact-card p {
+      margin: 10px 0;
+      font-size: 1.1rem;
+    }
+
+    .contact-card a {
+      display: inline-block;
+      margin-top: 10px;
+      color: #00eaff;
+      text-decoration: none;
+      font-weight: bold;
+      transition: color 0.3s;
+    }
+
+    .contact-card a:hover {
+      color: #ffffff;
+    }
+
+    @keyframes popIn {
+      0% { transform: scale(0.8); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    @keyframes slideIn {
+      from {
+        transform: translateY(-50px);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>📞 Contact Seller</header>
+
+  <div class="nav">
+    <button onclick="window.location.href='fruits.html'">Fruits</button>
+    <button onclick="window.location.href='index.html'">Pets</button>
+  </div>
+
+  <div class="contact-card">
+    <!-- Replace this image with real one -->
+    <img src="https://scontent.fceb3-1.fna.fbcdn.net/v/t39.30808-6/508602090_1352252459169298_6193136199099981104_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=6ee11a&_nc_eui2=AeFJQ2T2GsGa0HYnNYYW39_zGCIruzyH05MYIiu7PIfTk1DfOXqC8XAHrjcvt93AhKI-eAmYtODZfxc21ivPJmRy&_nc_ohc=ALNZVaZuCUIQ7kNvwEDXX3x&_nc_oc=AdnJUklbADK9sZYHsujCdWBZPZ-DsYc5EFD2AZ7hDViA2WTtwV1-NCMmFs36MrIca6g&_nc_zt=23&_nc_ht=scontent.fceb3-1.fna&_nc_gid=wuAwTACG3s2vL4XTZxBgtw&oh=00_AfMqJoKyxFF6YHryyfcVINxUr2GjNFVdV4VmSS3D64ItLw&oe=68615286" alt="Seller Image">
+    <h2>Qing Jian Loquias</h2>
+    <p>💸 GCash: 09082401778</p>
+    <a href="https://www.facebook.com/qingjian.loquias" target="_blank">🌐 Facebook Profile</a>
+  </div>
+
+</body>
+</html>

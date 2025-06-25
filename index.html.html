@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Grow A Garden - Pets</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      color: #fff;
+      background: url('https://static1.thegamerimages.com/wordpress/wp-content/uploads/wm/2025/04/garden-in-grow-a-garden.jpg') no-repeat center center fixed;
+      background-size: cover;
+    }
+
+    /* Blurred background overlay */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: inherit;
+      filter: blur(10px) brightness(0.6);
+      z-index: -1;
+    }
+
+    header {
+      text-align: center;
+      padding: 20px;
+      font-size: 2.5rem;
+      color: #fff;
+      text-shadow: 2px 2px #3b8b45;
+      animation: slideIn 1s ease-out;
+    }
+
+    .nav {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+
+    .nav a {
+      margin: 0 10px;
+      padding: 12px 25px;
+      border: none;
+      border-radius: 10px;
+      background: #6cf46c;
+      color: #043f02;
+      font-weight: bold;
+      box-shadow: 0 0 10px #6cf46c;
+      cursor: pointer;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .nav a:hover {
+      transform: scale(1.1);
+      box-shadow: 0 0 15px #8fff8f;
+    }
+
+    .pets {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 25px;
+      padding: 30px;
+    }
+
+    .pet {
+      background: rgba(0, 0, 0, 0.5);
+      border: 3px solid #6cf46c;
+      border-radius: 15px;
+      text-align: center;
+      padding: 15px;
+      box-shadow: 0 0 15px #6cf46c;
+      animation: popIn 0.8s ease;
+      transition: transform 0.3s;
+    }
+
+    .pet:hover {
+      transform: translateY(-5px) scale(1.05);
+      box-shadow: 0 0 25px #8fff8f;
+    }
+
+    .pet img {
+      width: 100px;
+      height: 100px;
+      border-radius: 10px;
+      margin-bottom: 10px;
+    }
+
+    .available-now {
+      font-size: 0.7em;
+      background: #00eaff;
+      color: #000;
+      padding: 3px 7px;
+      border-radius: 5px;
+      display: inline-block;
+      margin: 5px 0;
+    }
+
+      .unavailable-now {
+      font-size: 0.7em;
+      background: #c22222;
+      color: #000;
+      padding: 3px 7px;
+      border-radius: 5px;
+      display: inline-block;
+      margin: 5px 0;
+    }
+
+    .footer {
+      text-align: center;
+      background: rgba(0, 0, 0, 0.6);
+      padding: 20px;
+      font-size: 0.95rem;
+      margin-top: 20px;
+      line-height: 1.5em;
+    }
+
+    .buy-btn {
+      background: #6cf46c;
+      border: none;
+      color: #043f02;
+      margin-top: 8.5px;
+      padding: 5px 15px;
+      font-weight: bold;
+      border-radius: 8px;
+      box-shadow: 0 0 10px #6cf46c;
+      cursor: pointer;
+      transition: all 0.3s;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .buy-btn1 {
+      background: #f46c6c;
+      border: none;
+      color: #3f0202;
+      margin-top: 8.5px;
+      padding: 5px 15px;
+      font-weight: bold;
+      border-radius: 8px;
+      box-shadow: 0 0 10px #f46c6c;
+      cursor: pointer;
+      transition: all 0.3s;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    /* Animations */
+    @keyframes popIn {
+      0% {
+        transform: scale(0.8);
+        opacity: 0;
+      }
+      100% {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    @keyframes slideIn {
+      from {
+        transform: translateY(-50px);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+    
+
+  </style>
+</head>
+<body>
+
+  <header>🌱 Grow A Garden - Pets 🌸</header>
+
+  <div class="nav">
+    <a href="fruits.html">Fruits</a>
+    <a href="pets.html">Pets</a>
+    <a href="contact.html">Contact</a>
+  </div>
+
+  <section class="pets">
+    <div class="pet">
+      <img src="https://static.wikia.nocookie.net/growagarden/images/5/54/Raccon_Better_Quality.png" alt="Raccoon">
+      <div>Raccoon <div class="available-now">Available Now</div><br><strong>300.00</strong></div>
+      <a href="contact.html" class="buy-btn">Buy Now</a>
+    </div>
+    <div class="pet">
+      <img src="https://static.wikia.nocookie.net/growagarden/images/f/f2/DiscoBeeIcon.gif" alt="Disco Bee">
+      <div>Disco Bee <div class="available-now">Available Now</div><strong>300.00</strong></div>
+      <a href="contact.html" class="buy-btn">Buy Now</a>
+    </div>
+    <div class="pet">
+      <img src="https://static.wikia.nocookie.net/growagarden/images/7/7a/Queen_bee.png" alt="Queen Bee">
+      <div>Queen Bee <div class="available-now">Available Now</div><strong>150.00</strong></div>
+      <a href="contact.html" class="buy-btn">Buy Now</a>
+    </div>
+    <div class="pet">
+      <img src="https://static.wikia.nocookie.net/growagarden/images/1/18/Thy_Butterfly_V2.png" alt="Butterfly">
+      <div>Butterfly <div class="available-now">Available Now</div><strong>300.00</strong></div>
+      <a href="contact.html" class="buy-btn">Buy Now</a>
+    </div>
+    <div class="pet">
+      <img src="https://www.picclickimg.com/Dd0AAOSwsbJoSq3d/Online-Grow-A-Garden-Roblox-RAREST-HUGE-TITANIC.webp" alt="Night Owl">
+      <div>Huge Pets <div class="unavailable-now">Unavailable</div><br><strong>—</strong></div>
+      <a class="buy-btn1">Unavailable</a>
+    </div>
+    <div class="pet">
+      <img src="https://static.wikia.nocookie.net/growagarden/images/f/fc/Cooked_Owl.png" alt="Cooked Owl">
+      <div>Cooked Owl <div class="unavailable-now">Unavailable</div><br><strong>-</strong></div>
+      <a class="buy-btn1">Unavailable</a>
+    </div>
+    <div class="pet">
+      <img src="https://static.wikia.nocookie.net/growagarden/images/d/d5/RedFox.png" alt="Red Fox">
+      <div>Red Fox <div class="available-now">Available Now</div><strong>80.00</strong></div>
+      <a href="contact.html" class="buy-btn">Buy Now</a>
+    </div>
+    <div class="pet">
+      <img src="https://static.wikia.nocookie.net/growagarden/images/c/c9/DragonflyIcon.png" alt="Dragon Fly">
+      <div>Dragon Fly <div class="available-now">Available Now</div><br><strong>200.00</strong></div>
+      <a href="contact.html" class="buy-btn">Buy Now</a>
+    </div>
+  </section>
+
+  <div class="footer">
+    <div>NOTE: 🌼 UNLI VOUCH • CAN DO RECORD • WTU MM/MW • LEGIT • PAYMENT FIRST • SAFE 🌼</div>
+    <br>
+    <div>📘 FB: Qing Jian Loquias</div>
+    <div>💸 GCash Accepted</div>
+    <div>📩 PM FOR MORE</div>
+  </div>
+
+</body>
+</html>
