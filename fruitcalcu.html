@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="en-US" prefix="og: https://ogp.me/ns#">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Grow A Garden Calculator</title>
+    
+    <style>
+        /* Body and Background Styles */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Comic Sans MS';
+            color: #fff;
+            background: url('https://static1.thegamerimages.com/wordpress/wp-content/uploads/wm/2025/04/garden-in-grow-a-garden.jpg') no-repeat center center fixed;
+            background-size: cover;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: inherit;
+            filter: blur(10px) brightness(0.6);
+            z-index: -1;
+        }
+
+        /* Header Styles */
+        header {
+            text-align: center;
+            padding: 20px;
+            font-size: 2.5rem;
+            color: #fff;
+            text-shadow: 2px 2px #3b8b45;
+            animation: slideIn 1s ease-out;
+        }
+
+        /* Navigation Styles */
+        .nav {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .nav a {
+            margin: 0 10px;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 10px;
+            background: #6cf46c;
+            color: #043f02;
+            font-weight: bold;
+            box-shadow: 0 0 10px #6cf46c;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            text-decoration: none;
+        }
+
+        .nav a:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 15px #8fff8f;
+        }
+
+        /* Calculator Container */
+        .garden-calculator-container {
+            background: rgba(0, 0, 0, 0.5);
+            border: 3px solid #6cf46c;
+            border-radius: 15px;
+            text-align: center;
+            padding: 25px;
+            box-shadow: 0 0 15px #6cf46c;
+            animation: popIn 0.8s ease;
+            transition: transform 0.3s;
+            max-width: 600px;
+            margin: 30px auto;
+            color: #fff;
+        }
+
+        /* Calculator Sections */
+        .calc-section {
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            color: #6cf46c;
+            margin-bottom: 20px;
+            font-size: 2em;
+            text-shadow: 1px 1px #3b8b45;
+        }
+
+        /* Input Styles */
+        .input-label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 1.1em;
+            text-align: left;
+            padding-left: 10px;
+            color: #fff;
+        }
+
+        .base-value-input {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            border: 1px solid #6cf46c;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            font-size: 1em;
+        }
+
+        /* Button Styles */
+        .crop-button {
+            background: #6cf46c;
+            border: none;
+            color: #043f02;
+            padding: 10px 20px;
+            font-weight: bold;
+            border-radius: 8px;
+            box-shadow: 0 0 10px #6cf46c;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1.1em;
+            margin-top: 10px;
+        }
+
+        /* Mutation Options */
+        .mutation-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .mutation-option {
+            display: flex;
+            align-items: center;
+            padding: 8px 15px;
+            border-radius: 8px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid #6cf46c;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .mutation-option.selected {
+            background: #6cf46c;
+            color: #043f02;
+            box-shadow: 0 0 10px #6cf46c;
+        }
+
+        .mutation-label {
+            margin-left: 8px;
+        }
+
+        .mutation-multiplier {
+            font-weight: bold;
+            color: #043f02;
+        }
+
+        /* Results Section */
+        .total-section {
+            margin-top: 25px;
+        }
+
+        .total-header {
+            font-size: 1.4em;
+            color: #00eaff;
+            font-weight: bold;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #00eaff;
+        }
+
+        .total-value {
+            font-size: 2em;
+            color: #00eaff;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            z-index: 100;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.8);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            padding-top: 60px;
+        }
+
+        .modal {
+            background: rgba(0, 0, 0, 0.7);
+            border: 3px solid #6cf46c;
+            border-radius: 15px;
+            margin: 5% auto;
+            padding: 30px;
+            width: 80%;
+            max-width: 500px;
+            box-shadow: 0 0 20px #6cf46c;
+            text-align: center;
+            position: relative;
+            animation: popIn 0.5s ease-out;
+            color: #fff;
+        }
+
+        .modal-title {
+            color: #6cf46c;
+            font-size: 2em;
+            margin-bottom: 15px;
+        }
+
+        .close-button {
+            color: #aaa;
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .close-button:hover {
+            color: #8fff8f;
+        }
+
+        .crop-search-input {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            border: 1px solid #6cf46c;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            font-size: 1em;
+        }
+
+        .crop-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 10px;
+            max-height: 300px;
+            overflow-y: auto;
+            padding: 10px;
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 8px;
+            background: rgba(0,0,0,0.2);
+        }
+
+        .crop-item {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid #6cf46c;
+            border-radius: 8px;
+            padding: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: #fff;
+            font-size: 0.9em;
+        }
+
+        .crop-item:hover {
+            background: #6cf46c;
+            color: #043f02;
+            box-shadow: 0 0 8px #8fff8f;
+        }
+
+        .crop-item.selected {
+            background: #00eaff;
+            color: #043f02;
+            border-color: #00eaff;
+            box-shadow: 0 0 10px #00eaff;
+        }
+
+        /* Animations */
+        @keyframes popIn {
+            0% {
+                transform: scale(0.8);
+                opacity: 0;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        /* Footer Styles */
+        .site-footer {
+            text-align: center;
+            background: rgba(0, 0, 0, 0.6);
+            padding: 20px;
+            font-size: 0.95rem;
+            margin-top: 20px;
+            line-height: 1.5em;
+        }
+    </style>
+</head>
+
+<body>
+    <header>🌱 Grow A Garden - Fruit Value Calculator 🌸</header>
+
+    <div class="nav">
+        <a href="fruits.html">Fruits</a>
+        <a href="contact.html">Contact</a>
+        <a href="fruitcalcu.html">Calculator</a>
+        <a href="robux.html">Robux</a>
+    </div>
+
+    <div class="garden-calculator-container">
+        <div class="garden-calculator-wrapper">
+            <!-- Crop Selector Section -->
+            <div class="calc-section crop-section">
+                <h2 class="section-title">🌱 Fruit Selection</h2>
+                <div class="crop-selector">
+                    <button class="crop-button" id="selectCropBtn">
+                        Select Fruit
+                    </button>
+                    <label for="baseValue" class="input-label">Minimum Base Value:</label>
+                    <input type="number" id="baseValue" class="base-value-input" placeholder="Enter base value" min="0">
+                </div>
+            </div>
+
+            <!-- Mutations Section -->
+            <div class="calc-section mutations-section">
+                <h2 class="section-title">✨ Mutations</h2>
+                <div class="mutations-container">
+                    <!-- Growth Mutations -->
+                    <div class="mutation-group">
+                        <h3 class="mutation-title">Growth Mutations</h3>
+                        <div class="mutation-options growth-mutations">
+                            <label class="mutation-option selected">
+                                <input type="radio" name="growth" value="1" checked>
+                                <span class="mutation-label">
+                                    <span>Default</span>
+                                    <span class="mutation-multiplier">1x</span>
+                                </span>
+                            </label>
+                            <label class="mutation-option">
+                                <input type="radio" name="growth" value="20">
+                                <span class="mutation-label">
+                                    <span>Golden 🏆</span>
+                                    <span class="mutation-multiplier">20x</span>
+                                </span>
+                            </label>
+                            <label class="mutation-option">
+                                <input type="radio" name="growth" value="50">
+                                <span class="mutation-label">
+                                    <span>Rainbow 🌈</span>
+                                    <span class="mutation-multiplier">50x</span>
+                                </span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Temperature Mutations -->
+                    <div class="mutation-group">
+                        <h3 class="mutation-title">Temperature Mutations</h3>
+                        <div class="mutation-options temperature-mutations">
+                            <label class="mutation-option selected">
+                                <input type="radio" name="temperature" value="0" checked>
+                                <span class="mutation-label">
+                                    <span>Default</span>
+                                    <span class="mutation-multiplier">+0</span>
+                                </span>
+                            </label>
+                            <label class="mutation-option">
+                                <input type="radio" name="temperature" value="1">
+                                <span class="mutation-label">
+                                    <span>Wet 💧</span>
+                                    <span class="mutation-multiplier">+1</span>
+                                </span>
+                            </label>
+                            <label class="mutation-option">
+                                <input type="radio" name="temperature" value="1">
+                                <span class="mutation-label">
+                                    <span>Chilled 🧊</span>
+                                    <span class="mutation-multiplier">+1</span>
+                                </span>
+                            </label>
+                            <label class="mutation-option">
+                                <input type="radio" name="temperature" value="9">
+                                <span class="mutation-label">
+                                    <span>Frozen ❄️</span>
+                                    <span class="mutation-multiplier">+9</span>
+                                </span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Environmental Mutations -->
+                    <div class="mutation-group">
+                        <h3 class="mutation-title">Environmental Mutations</h3>
+                        <div class="mutation-options environmental-mutations">
+                            <label class="mutation-option">
+                                <input type="checkbox" name="environmental" value="1">
+                                <span class="mutation-label">
+                                    <span>Chocolate</span>
+                                    <span class="mutation-multiplier">+1</span>
+                                </span>
+                            </label>
+                            <label class="mutation-option">
+                                <input type="checkbox" name="environmental" value="1">
+                                <span class="mutation-label">
+                                    <span>Moonlit</span>
+                                    <span class="mutation-multiplier">+1</span>
+                                </span>
+                            </label>
+                            <label class="mutation-option">
+                                <input type="checkbox" name="environmental" value="2">
+                                <span class="mutation-label">
+                                    <span>Pollinated</span>
+                                    <span class="mutation-multiplier">+2</span>
+                                </span>
+                            </label>
+                            <label class="mutation-option">
+                                <input type="checkbox" name="environmental" value="3">
+                                <span class="mutation-label">
+                                    <span>Bloodlit</span>
+                                    <span class="mutation-multiplier">+3</span>
+                                </span>
+                            </label>
+                            <label class="mutation-option">
+                                <input type="checkbox" name="environmental" value="3">
+                                <span class="mutation-label">
+                                    <span>Burnt</span>
+                                    <span class="mutation-multiplier">+3</span>
+                                </span>
+                            </label>
+                            <label class="mutation-option">
+                                <input type="checkbox" name="environmental" value="4">
+                                <span class="mutation-label">
+                                    <span>Honey Glazed</span>
+                                    <span class="mutation-multiplier">+4</span>
+                                </span>
+                            </label>
+                            <label class="mutation-option">
+                                <input type="checkbox" name="environmental" value="4">
+                                <span class="mutation-label">
+                                    <span>Heavenly</span>
+                                    <span class="mutation-multiplier">+4</span>
+                                </span>
+                            </label>
+                            <label class="mutation-option">
+                                <input type="checkbox" name="environmental" value="4">
+                                <span class="mutation-label">
+                                    <span>Plasma</span>
+                                    <span class="mutation-multiplier">+4</span>
+                                </span>
+                            </label>
+                            <label class="mutation-option">
+                                <input type="checkbox" name="environmental" value="9">
+                                <span class="mutation-label">
+                                    <span>Cooked</span>
+                                    <span class="mutation-multiplier">+9</span>
+                                </span>
+                            </label>
+                            <label class="mutation-option">
+                                <input type="checkbox" name="environmental" value="24">
+                                <span class="mutation-label">
+                                    <span>Molten</span>
+                                    <span class="mutation-multiplier">+24</span>
+                                </span>
+                            </label>
+                            <label class="mutation-option">
+                                <input type="checkbox" name="environmental" value="24">
+                                <span class="mutation-label">
+                                    <span>Zombified</span>
+                                    <span class="mutation-multiplier">+24</span>
+                                </span>
+                            </label>
+                            <label class="mutation-option">
+                                <input type="checkbox" name="environmental" value="99">
+                                <span class="mutation-label">
+                                    <span>Shocked</span>
+                                    <span class="mutation-multiplier">+99</span>
+                                </span>
+                            </label>
+                            <label class="mutation-option">
+                                <input type="checkbox" name="environmental" value="119">
+                                <span class="mutation-label">
+                                    <span>Celestial</span>
+                                    <span class="mutation-multiplier">+119</span>
+                                </span>
+                            </label>
+                            <label class="mutation-option">
+                                <input type="checkbox" name="environmental" value="124">
+                                <span class="mutation-label">
+                                    <span>Disco</span>
+                                    <span class="mutation-multiplier">+124</span>
+                                </span>
+                            </label>
+                            <label class="mutation-option">
+                                <input type="checkbox" name="environmental" value="124">
+                                <span <span class="mutation-label">
+                                    <span>Meteoric</span>
+                                    <span class="mutation-multiplier">+124</span>
+                                </span>
+                            </label>
+                            <label class="mutation-option">
+                                <input type="checkbox" name="environmental" value="134">
+                                <span class="mutation-label">
+                                    <span>VoidTouched</span>
+                                    <span class="mutation-multiplier">+134</span>
+                                </span>
+                            </label>
+                            <label class="mutation-option">
+                                <input type="checkbox" name="environmental" value="149">
+                                <span class="mutation-label">
+                                    <span>Dawnbound</span>
+                                    <span class="mutation-multiplier">+149</span>
+                                </span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Input Weight, Quantity, and Max Mutation Section -->
+                    <div class="mutation-group">
+                        <div class="weight-section">
+                            <div class="input-row">
+                                <div class="input-column">
+                                    <label for="weight" class="input-label">Input Weight</label>
+                                    <input type="number" id="weight" class="base-value-input" placeholder="Enter weight" min="0" step="0.01">
+                                </div>
+                                <div class="input-column">
+                                    <label for="quantity" class="input-label">Quantity</label>
+                                    <input type="number" id="quantity" class="base-value-input" placeholder="Enter quantity" min="1" value="1">
+                                </div>
+                                <div class="input-column">
+                                    <label for="maxMutation" class="input-label">Max Mutation</label>
+                                    <label class="mutation-toggle">
+                                        <input type="checkbox" id="maxMutation" name="maxMutation">
+                                        <span class="slider"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Results Section -->
+            <div class="calc-section total-section">
+                <div class="total-content">
+                    <div class="total-header">Calculated Minimum Value</div>
+                    <div class="total-value" id="totalValue">0</div>
+                    
+                    <div class="note-section">
+                        <span class="note-icon">⚠️</span>
+                        <span class="note-text">Note: This is the minimum value of your plant(s). The actual value depends on the plant size, weight, and quantity.</span>
+                    </div>
+                    
+                    <div class="breakdown-section">
+                        <div class="breakdown-title">Calculation Breakdown:</div>
+                        <div class="breakdown-item" id="baseValueBreakdown">Base Value: 0</div>
+                        <div class="breakdown-item" id="growthBreakdown">Growth Multiplier: ×1 (Default)</div>
+                        <div class="breakdown-item" id="temperatureBreakdown">Temperature Bonus: +0 (None)</div>
+                        <div class="breakdown-item" id="environmentalBreakdown">Environmental Stacks: +0</div>
+                        <div class="breakdown-item" id="weightBreakdown">Weight Adjustment: None</div>
+                        <div class="breakdown-item" id="quantityBreakdown">Quantity: 1</div>
+                        <div class="breakdown-formula" id="formulaBreakdown">Formula: 0 × 1 × (1 + 0) × (1 + 0) × 1 = 0</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal -->
+        <div class="modal-overlay" id="modalOverlay">
+            <div class="modal">
+                <div class="modal-header">
+                    <h2 class="modal-title">Select a Crop</h2>
+                    <button class="close-button" id="closeModal">×</button>
+                </div>
+                <div class="modal-body">
+                    <div class="search-container">
+                        <input 
+                            type="text" 
+                            id="cropSearch" 
+                            class="crop-search-input" 
+                            placeholder="🔍 Search for crops..."
+                            autocomplete="off"
+                        >
+                    </div>
+                    <div id="cropGrid" class="crop-grid">
+                        <div class="loading">
+                            <div class="spinner"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Dummy crop data for demonstration. In a real scenario, this would be fetched from a JSON file.
+        const cropsData = [
+  { name: "Apple", baseValue: 248, image: "apple.webp" },
+  { name: "Bamboo", baseValue: 3610, image: "bamboo.webp" },
+  { name: "Banana", baseValue: 1579, image: "banana.webp" },
+  { name: "Beanstalk", baseValue: 25270, image: "beanstalk.webp" },
+  { name: "Blood Banana", baseValue: 5415, image: "blood-banana.webp" },
+  { name: "Blueberry", baseValue: 18, image: "blueberry.webp" },
+  { name: "Cacao", baseValue: 10830, image: "cacao.webp" },
+  { name: "Cactus", baseValue: 3068, image: "cactus.webp" },
+  { name: "Candy Blossom", baseValue: 90250, image: "candy-blossom.webp" },
+  { name: "Candy Sunflower", baseValue: 72200, image: "candy-sunflower.webp" },
+  { name: "Carrot", baseValue: 18, image: "carrot.webp" },
+  { name: "Celestiberry", baseValue: 9025, image: "celestiberry.webp" },
+  { name: "Cherry Blossom", baseValue: 550, image: "cherry-blossom.webp" },
+  { name: "Chocolate Carrot", baseValue: 9928, image: "chocolate-carrot.webp" },
+  { name: "Coconut", baseValue: 361, image: "coconut.webp" },
+  { name: "Corn", baseValue: 36, image: "corn.webp" },
+  { name: "Cranberry", baseValue: 1805, image: "cranberry.webp" },
+  { name: "Cursed Fruit", baseValue: 10000, image: "cursed-fruit.webp" },
+  { name: "Daffodil", baseValue: 903, image: "daffodil.webp" },
+  { name: "Dragon Fruit", baseValue: 4287, image: "dragon-fruit.webp" },
+  { name: "Durian", baseValue: 4513, image: "durian.webp" },
+  { name: "Easter Egg", baseValue: 2256, image: "easter-egg.webp" },
+  { name: "Eggplant", baseValue: 6769, image: "eggplant.webp" },
+  { name: "Foxglove", baseValue: 18050, image: "foxglove.webp" },
+  { name: "Glowshroom", baseValue: 271, image: "glowshroom.webp" },
+  { name: "Grape", baseValue: 7085, image: "grape.webp" },
+  { name: "Hive", baseValue: 45125, image: "hive.webp" },
+  { name: "Lemon", baseValue: 500, image: "lemon.webp" },
+  { name: "Lilac", baseValue: 31588, image: "lilac.webp" },
+  { name: "Lotus", baseValue: 15343, image: "lotus.webp" },
+  { name: "Mango", baseValue: 5866, image: "mango.webp" },
+  { name: "Mint", baseValue: 5415, image: "mint.webp" },
+  { name: "Moon Blossom", baseValue: 50138, image: "moon-blossom.webp" },
+  { name: "Moon Mango", baseValue: 45125, image: "moon-mango.webp" },
+  { name: "Moon Melon", baseValue: 16245, image: "moon-melon.webp" },
+  { name: "Moonflower", baseValue: 8574, image: "moonflower.webp" },
+  { name: "Moonglow", baseValue: 18050, image: "moonglow.webp" },
+  { name: "Mushroom", baseValue: 136278, image: "mushroom.webp" },
+  { name: "Nectarine", baseValue: 31588, image: "nectarine.webp" },
+  { name: "Nightshade", baseValue: 3159, image: "nightshade.webp" },
+  { name: "Orange Tulip", baseValue: 767, image: "orange-tulip.webp" },
+  { name: "Papaya", baseValue: 1000, image: "papaya.webp" },
+  { name: "Passionfruit", baseValue: 3204, image: "passionfruit.webp" },
+  { name: "Peach", baseValue: 271, image: "peach.webp" },
+  { name: "Pear", baseValue: 500, image: "pear.webp" },
+  { name: "Pepper", baseValue: 7220, image: "pepper.webp" },
+  { name: "Pineapple", baseValue: 1805, image: "pineapple.webp" },
+  { name: "Pink Lily", baseValue: 58663, image: "pink-lily.webp" },
+  { name: "Pumpkin", baseValue: 3700, image: "pumpkin.webp" },
+  { name: "Purple Dahlia", baseValue: 67688, image: "purple-dahlia.webp" },
+  { name: "Raspberry", baseValue: 90, image: "raspberry.webp" },
+  { name: "Red Lollipop", baseValue: 45125, image: "red-lollipop.webp" },
+  { name: "Rose", baseValue: 4513, image: "rose.webp" },
+  { name: "Soul Fruit", baseValue: 3000, image: "soul-fruit.webp" },
+  { name: "Starfruit", baseValue: 13538, image: "starfruit.webp" },
+  { name: "Strawberry", baseValue: 14, image: "strawberry.webp" },
+  { name: "Sunflower", baseValue: 135375, image: "sunflower.webp" },
+  { name: "Tomato", baseValue: 27, image: "tomato.webp" },
+  { name: "Venus Fly Trap", baseValue: 17000, image: "venus-fly-trap.webp" },
+  { name: "Watermelon", baseValue: 2708, image: "watermelon.webp" }
+];
+
+
+        let selectedCropBaseValue = 0;
+        let selectedCropName = "None";
+
+        const selectCropBtn = document.getElementById('selectCropBtn');
+        const modalOverlay = document.getElementById('modalOverlay');
+        const closeModalBtn = document.getElementById('closeModal');
+        const cropSearchInput = document.getElementById('cropSearch');
+        const cropGrid = document.getElementById('cropGrid');
+        const baseValueInput = document.getElementById('baseValue');
+        const totalValueDisplay = document.getElementById('totalValue');
+        const baseValueBreakdown = document.getElementById('baseValueBreakdown');
+        const growthBreakdown = document.getElementById('growthBreakdown');
+        const temperatureBreakdown = document.getElementById('temperatureBreakdown');
+        const environmentalBreakdown = document.getElementById('environmentalBreakdown');
+        const weightBreakdown = document.getElementById('weightBreakdown');
+        const quantityBreakdown = document.getElementById('quantityBreakdown');
+        const formulaBreakdown = document.getElementById('formulaBreakdown');
+
+        const growthRadios = document.querySelectorAll('input[name="growth"]');
+        const temperatureRadios = document.querySelectorAll('input[name="temperature"]');
+        const environmentalCheckboxes = document.querySelectorAll('input[name="environmental"]');
+        const weightInput = document.getElementById('weight');
+        const quantityInput = document.getElementById('quantity');
+        const maxMutationCheckbox = document.getElementById('maxMutation');
+
+        // Function to render crops in the modal
+        function renderCrops(crops) {
+            cropGrid.innerHTML = '';
+            if (crops.length === 0) {
+                cropGrid.innerHTML = '<p>No crops found.</p>';
+                return;
+            }
+            crops.forEach(crop => {
+                const cropItem = document.createElement('div');
+                cropItem.classList.add('crop-item');
+                cropItem.dataset.baseValue = crop.baseValue;
+                cropItem.dataset.cropName = crop.name;
+                cropItem.innerHTML = `
+                    <img src="https://growagarden-calculator.com/cropimage/${crop.image}" alt="${crop.name}" style="width:50px; height:50px;">
+                    <p>${crop.name}</p>
+                    <small>Base: ${crop.baseValue}</small>
+                `;
+                cropItem.addEventListener('click', () => {
+                    // Remove 'selected' class from all other items
+                    document.querySelectorAll('.crop-item').forEach(item => {
+                        item.classList.remove('selected');
+                    });
+                    // Add 'selected' class to the clicked item
+                    cropItem.classList.add('selected');
+
+                    selectedCropBaseValue = parseFloat(cropItem.dataset.baseValue);
+                    selectedCropName = cropItem.dataset.cropName;
+                    baseValueInput.value = selectedCropBaseValue;
+                    modalOverlay.style.display = 'none';
+                    calculateTotalValue();
+                });
+                cropGrid.appendChild(cropItem);
+            });
+        }
+
+        // Initial render of all crops
+        renderCrops(cropsData);
+
+        // Event Listeners for Modal
+        selectCropBtn.addEventListener('click', () => {
+            modalOverlay.style.display = 'block';
+            cropSearchInput.value = ''; // Clear search on open
+            renderCrops(cropsData); // Show all crops
+        });
+
+        closeModalBtn.addEventListener('click', () => {
+            modalOverlay.style.display = 'none';
+        });
+
+        window.addEventListener('click', (event) => {
+            if (event.target === modalOverlay) {
+                modalOverlay.style.display = 'none';
+            }
+        });
+
+        cropSearchInput.addEventListener('input', (event) => {
+            const searchTerm = event.target.value.toLowerCase();
+            const filteredCrops = cropsData.filter(crop => 
+                crop.name.toLowerCase().includes(searchTerm)
+            );
+            renderCrops(filteredCrops);
+        });
+
+        // Calculation Logic
+        function calculateTotalValue() {
+            let base = parseFloat(baseValueInput.value) || 0;
+            let growthMultiplier = 1;
+            let temperatureBonus = 0;
+            let environmentalBonus = 0;
+            let weight = parseFloat(weightInput.value) || 0;
+            let quantity = parseInt(quantityInput.value) || 1;
+
+            // Growth Mutations
+            growthRadios.forEach(radio => {
+                if (radio.checked) {
+                    growthMultiplier = parseFloat(radio.value);
+                    const label = radio.nextElementSibling;
+                    growthBreakdown.textContent = `Growth Multiplier: ×${radio.value} (${label.querySelector('span:first-child').textContent})`;
+                }
+            });
+
+            // Temperature Mutations
+            temperatureRadios.forEach(radio => {
+                if (radio.checked) {
+                    temperatureBonus = parseFloat(radio.value);
+                    const label = radio.nextElementSibling;
+                    temperatureBreakdown.textContent = `Temperature Bonus: +${radio.value} (${label.querySelector('span:first-child').textContent})`;
+                }
+            });
+
+            // Environmental Mutations
+            environmentalBonus = 0;
+            let environmentalStacks = [];
+            environmentalCheckboxes.forEach(checkbox => {
+                if (checkbox.checked) {
+                    environmentalBonus += parseFloat(checkbox.value);
+                    environmentalStacks.push(checkbox.nextElementSibling.querySelector('span:first-child').textContent);
+                }
+            });
+            environmentalBreakdown.textContent = `Environmental Stacks: +${environmentalBonus} (${environmentalStacks.length > 0 ? environmentalStacks.join(', ') : 'None'})`;
+
+            // Max Mutation Toggle
+            if (maxMutationCheckbox.checked) {
+                // Apply max mutation logic if needed. For this example, we'll just ensure all environmental are selected.
+                // In a real scenario, "Max Mutation" might mean setting all environmental checkboxes to their max value.
+                // For simplicity, we'll just ensure the environmental bonus is applied.
+            }
+
+            // Weight Adjustment
+            let weightAdjustment = 1;
+            if (weight > 0) {
+                weightAdjustment = 1 + (weight / 100); // Example: 100 weight = 2x value
+                weightBreakdown.textContent = `Weight Adjustment: ×${weightAdjustment.toFixed(2)} (Weight: ${weight})`;
+            } else {
+                weightBreakdown.textContent = `Weight Adjustment: None`;
+            }
+
+            // Calculate total value
+            let total = base * growthMultiplier * (1 + temperatureBonus) * (1 + environmentalBonus) * weightAdjustment * quantity;
+
+            totalValueDisplay.textContent = total.toFixed(2);
+            baseValueBreakdown.textContent = `Base Value: ${base}`;
+            quantityBreakdown.textContent = `Quantity: ${quantity}`;
+            formulaBreakdown.textContent = `Formula: ${base} × ${growthMultiplier} × (1 + ${temperatureBonus}) × (1 + ${environmentalBonus}) × ${weightAdjustment.toFixed(2)} × ${quantity} = ${total.toFixed(2)}`;
+        }
+
+        // Add event listeners to all relevant inputs and radios/checkboxes
+        baseValueInput.addEventListener('input', calculateTotalValue);
+        growthRadios.forEach(radio => radio.addEventListener('change', calculateTotalValue));
+        temperatureRadios.forEach(radio => radio.addEventListener('change', calculateTotalValue));
+        environmentalCheckboxes.forEach(checkbox => checkbox.addEventListener('change', calculateTotalValue));
+        weightInput.addEventListener('input', calculateTotalValue);
+        quantityInput.addEventListener('input', calculateTotalValue);
+        maxMutationCheckbox.addEventListener('change', calculateTotalValue);
+
+        // Initial calculation on page load
+        calculateTotalValue();
+    </script>
+
+    <footer>
+        <div>&copy; 2025 Grow A Garden Calculator</div>
+        <div>NOTE: 🌼 UNLI VOUCH • CAN DO RECORD • WTU MM/MW • LEGIT • PAYMENT FIRST • SAFE 🌼</div>
+        <br>
+        <div>📘 FB: Qing Jian Loquias</div>
+        <div>💸 GCash Accepted</div>
+        <div>📩 PM FOR MORE</div>
+    </footer>
+</body>
+</html>
